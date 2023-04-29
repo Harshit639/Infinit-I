@@ -4,6 +4,7 @@ import { doc, updateDoc } from "firebase/firestore";
 import { db } from '../src/core/config';
 import { getAuth } from '../src/core/config';
 
+
 export const DEVICES = [
     // new Device('Motor Controller','led','#CEEDC7'),
     // new Device('Smart TV','led','#FFF6BD'),
@@ -39,6 +40,7 @@ export const DEVICES = [
     devices:[],
     addDevice: (devicename,topic,color,tankheight) => {},
     setDevices:(devices)=>{},
+    deleteDevice:(topic)=>{}
 
 });
 
@@ -60,7 +62,7 @@ function expenseReducer(state,action){
                 updateDoc(washingtonRef, {
                     device: [{
                         name:action.payload.devicename,
-                        topic: 'led',
+                        topic: action.payload.topic,
                         color: '#CEEDC7',
                         tankheight: action.payload.tankheight
                         
@@ -68,6 +70,20 @@ function expenseReducer(state,action){
                   });
                 return [{name:action.payload.devicename,topic:action.payload.topic,color:action.payload.color,tankheight:action.payload.tankheight}]
             }
+            
+        case 'DELETE':
+            const delnRef = doc(db, "users", getAuth().currentUser.uid);
+            console.log(action.payload)
+            console.log(state)
+            const delarray = state.filter((device)=>{
+                return device.topic!=action.payload;
+            })
+            console.log(delarray)
+            updateDoc(delnRef,{
+                device: delarray
+            })
+
+            return delarray;
             
         
         case 'SET':
@@ -86,12 +102,17 @@ function DeviceContextProvider({children}){
     function setDevices(devices){
         dispatch({type:'SET',payload: devices})
     }
+
+    function deleteDevice(topic){
+        dispatch({type:'DELETE', payload:topic})
+    }
     
 
     const value={
         devices:deviceState,
         addDevice: addDevice,
         setDevices: setDevices,
+        deleteDevice: deleteDevice,
 
     }
 

@@ -10,12 +10,12 @@ import { useNavigation } from "@react-navigation/native";
 import { ExpenseContext } from '../../store/device-context';
 import { Alert } from "react-native";
 
+const screenWidth = Dimensions.get('screen').width;
 
 
 
 
-
-function DeviceComponent({name,color,onpressed,url,mqttfuncon,mqttfuncoff,client,tankheight}){
+function DeviceComponentTrial({name,color,onpressed,url,mqttfuncon,mqttfuncoff,client,tankheight}){
     const [isconnected,setisconnected] = useState(false);
     const navigation = useNavigation();
     const [isEnabled, setIsEnabled] = useState(false);
@@ -139,16 +139,19 @@ function DeviceComponent({name,color,onpressed,url,mqttfuncon,mqttfuncoff,client
         <Pressable android_ripple={{color:'#ccc'}}  style={({pressed})=>pressed? [styles.button,styles.pressedbutton]: styles.button}
         onPress={devicepress} onLongPress={deletedevice} >
           
-            <View style={isEnabled?[styles.innercontainer,{backgroundColor: 'black'}]:[styles.innercontainer,{backgroundColor: color}]}>
-            <Image source={isEnabled? require('../assets/motorwhite.png'):require('../assets/motor.png')} style={styles.image} />
+            <View style={isEnabled?[styles.innercontainer,{backgroundColor: 'black',borderWidth:0,shadowColor: 'black',
+        shadowOffset:{width:0, height:2},
+        shadowOpacity:0.3,
+        shadowRadius:8,}]:[styles.innercontainer]}>
+            <Image source={isEnabled? require('../assets/wmcw.png'):require('../assets/wmcb.png')} style={styles.image} />
                 <Text style={isEnabled?[styles.buttontext,{color:"white"}]:styles.buttontext}>{name}</Text>
                 {/* <Text>5 devices</Text> */}
                 <View style={styles.toggle}>
                 <Switch
-                     style={{ transform: [{ scaleX: .8 }, { scaleY: .8 }], marginTop:5 }}
+                     style={{ transform: [{ scaleX: screenWidth>600?1.6:.8 }, { scaleY: screenWidth>600?1.6:.8 }], marginTop:screenWidth>600?30:5, marginLeft:screenWidth>600?20:0 }}
                     trackColor={{ false: "#767577", true: "white" }}
                     thumbColor={isEnabled ? "#ADE792" : "#f4f3f4"}
-                    ios_backgroundColor="#3e3e3e"
+                    ios_backgroundColor="#3ebae7"
                     onValueChange={toggleSwitch}
                     value={isEnabled}
                 />
@@ -177,20 +180,36 @@ const styles = StyleSheet.create({
     griditem:{
         flex:1,
         margin:16,
-        elevation: 14,
-        height: Platform.OS=='android'?Dimensions.get('window').height/5 :Dimensions.get('window').height/6 ,
-        borderRadius:36,
-        shadowColor: 'black',
-        shadowOffset:{width:0, height:2},
-        shadowOpacity:0.25,
-        shadowRadius:8,
-        backgroundColor:'white',
-        overflow: Platform.OS==='android'? 'hidden':'visible',
+        marginVertical:10,
+        // elevation: 14,
+        height: screenWidth>600?350:Platform.OS=='android'?Dimensions.get('window').height/5 :Dimensions.get('window').height/5.5 ,
+        
+        borderRadius:20,
+       
+        // shadowColor: 'black',
+        // shadowOffset:{width:0, height:2},
+        // shadowOpacity:0.25,
+        // shadowRadius:8,
+    //     bordercolor:'#fff',
+    //   shadowColor: '#CEEDC7',
+    //     shadowOffset:{width:0, height:10},
+    //     shadowOpacity:0.25,
+    //     shadowRadius:20,
+    //     backgroundColor:'white',
+    //     overflow: Platform.OS==='android'? 'hidden':'visible',
+      backgroundColor:'#fff',
+      elevation:30,
+      shadowOffset:{width:0, height:2},
+      shadowOpacity:0.5,
+      shadowRadius:8,
+      shadowColor:'#3ebae7',
         
     },
 
     button:{
         flex:1,
+        // shadowColor:'#ff0909',
+        // elevation: 14,
     },
     innercontainer:{
         flex:1,
@@ -198,18 +217,26 @@ const styles = StyleSheet.create({
         padding:15,
         justifyContent:'center',
         alignContent:'center',
-        borderRadius:36,
+        borderRadius:17,
+        borderColor:'#3ebae7',
+        // borderWidth:2,
+        
+
     },
     pressedbutton:{
         opacity:0.5
     },
     buttontext:{
-        fontSize:16,
-        fontWeight:'bold'
+        
+        fontSize:screenWidth>600?32:16,
+        fontWeight:'bold',
+        
     },
     image:{
-        height:50,
-        width:50
+        marginTop:Platform.OS=="android"?15:10,
+        height:screenWidth>600?100:55,
+        width:screenWidth>600?100:50,
+        // backgroundColor:'black'
     },
     // toggle:{
     //     marginLeft:-10,
@@ -236,4 +263,4 @@ const styles = StyleSheet.create({
 
 })
 
-export default DeviceComponent;
+export default DeviceComponentTrial;

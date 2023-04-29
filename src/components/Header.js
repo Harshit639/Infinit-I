@@ -3,8 +3,8 @@ import { StyleSheet } from 'react-native'
 import { Text } from 'react-native-paper'
 import { theme } from '../core/theme'
 
-export default function Header(props) {
-  return <Text style={styles.header} {...props} />
+export default function Header({children,style}) {
+  return <Text style={[styles.header,style]}>{children}</Text>
 }
 
 const styles = StyleSheet.create({

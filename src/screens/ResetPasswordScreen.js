@@ -1,40 +1,40 @@
-import React, { useState } from 'react'
-import Background from '../components/Background'
-import BackButton from '../components/BackButton'
-import Logo from '../components/Logo'
-import Header from '../components/Header'
-import TextInput from '../components/TextInput'
-import Button from '../components/Button'
-import { emailValidator } from '../helpers/emailValidator'
-import { sendPasswordResetEmail,getAuth } from 'firebase/auth'
-import Toast from '../components/Toast'
-import { StyleSheet, View} from 'react-native'
+import React, { useState } from "react";
+import Background from "../components/Background";
+import BackButton from "../components/BackButton";
+import Logo from "../components/Logo";
+import Header from "../components/Header";
+import TextInput from "../components/TextInput";
+import Button from "../components/Button";
+import { emailValidator } from "../helpers/emailValidator";
+import { sendPasswordResetEmail, getAuth } from "firebase/auth";
+import Toast from "../components/Toast";
+import { StyleSheet, View } from "react-native";
 
 export default function ResetPasswordScreen({ navigation }) {
-  const [email, setEmail] = useState({ value: '', error: '' })
-  const [loading, setLoading] = useState(false)
-  const [toast, setToast] = useState({ value: '', type: '' })
+  const [email, setEmail] = useState({ value: "", error: "" });
+  const [loading, setLoading] = useState(false);
+  const [toast, setToast] = useState({ value: "", type: "" });
 
   const sendResetPasswordEmail = async () => {
-    const emailError = emailValidator(email.value)
+    const emailError = emailValidator(email.value);
     if (emailError) {
-      setEmail({ ...email, error: emailError })
-      return
+      setEmail({ ...email, error: emailError });
+      return;
     }
-    setLoading(true)
-    await sendPasswordResetEmail(getAuth(),email.value)
-    .then(() => {
-      // Password reset email sent!
-      setToast({
-        type: 'success',
-        message: 'Email with password has been sent.',
+    setLoading(true);
+    await sendPasswordResetEmail(getAuth(), email.value)
+      .then(() => {
+        // Password reset email sent!
+        setToast({
+          type: "success",
+          message: "Email with password has been sent.",
+        });
       })
-    })
-    .catch((error) => {
-      setToast({ type: 'error', message: error.message })
-      const errorCode = error.code;
-      const errorMessage = error.message;
-    });
+      .catch((error) => {
+        setToast({ type: "error", message: error.message });
+        const errorCode = error.code;
+        const errorMessage = error.message;
+      });
     // const response = await sendPasswordResetEmail(getAuth(),email.value)
     // if (response.error) {
     //   setToast({ type: 'error', message: response.error })
@@ -44,8 +44,8 @@ export default function ResetPasswordScreen({ navigation }) {
     //     message: 'Email with password has been sent.',
     //   })
     // }
-    setLoading(false)
-  }
+    setLoading(false);
+  };
 
   return (
     <Background>
@@ -56,7 +56,7 @@ export default function ResetPasswordScreen({ navigation }) {
         label="E-mail address"
         returnKeyType="done"
         value={email.value}
-        onChangeText={(text) => setEmail({ value: text, error: '' })}
+        onChangeText={(text) => setEmail({ value: text, error: "" })}
         error={!!email.error}
         errorText={email.error}
         autoCapitalize="none"
@@ -74,20 +74,16 @@ export default function ResetPasswordScreen({ navigation }) {
         Send Instructions
       </Button>
       <View style={styles.toast}>
-       <Toast {...toast} onDismiss={() => setToast({ value: '', type: '' })} />
+        <Toast {...toast} onDismiss={() => setToast({ value: "", type: "" })} />
       </View>
-      
     </Background>
-  )
+  );
 }
 
-
-
 const styles = StyleSheet.create({
-  toast:{
-   
-      marginTop:150,
-      justifyContent:'center',
-      alignItems:'center',
-  }
-})
+  toast: {
+    marginTop: 150,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+});

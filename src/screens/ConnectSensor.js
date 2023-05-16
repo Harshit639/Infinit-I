@@ -153,6 +153,7 @@ const ConnectSensor = () => {
             <Picker.Item label="500 L" value="500" />
             <Picker.Item label="1000 L" value="1000" />
             <Picker.Item label="1500 L" value="1500" />
+            <Picker.Item label="2000 L" value="2000" />
             <Picker.Item label="3000 L" value="3000" />
             <Picker.Item label="C Tank" value="3" />
           </Picker>

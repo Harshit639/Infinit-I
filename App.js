@@ -76,37 +76,35 @@ export default function App() {
     <>
       <StatusBar style="dark" />
       <Provider theme={theme}>
-        <MqttClientProvider>
-          <NavigationContainer>
-            <Stack.Navigator
-              initialRouteName="AuthLoadingScreen"
-              screenOptions={{
-                headerShown: false,
-              }}
-            >
-              <Stack.Screen
-                name="AuthLoadingScreen"
-                component={AuthLoadingScreen}
-              />
-              <Stack.Screen name="StartScreen" component={StartScreen} />
-              <Stack.Screen name="LoginScreen" component={LoginScreen} />
-              <Stack.Screen name="RegisterScreen" component={RegisterScreen} />
-              <Stack.Screen name="Intro" component={MyTabs}></Stack.Screen>
-              <Stack.Screen
-                name="Connect"
-                component={ConnectSensor}
-              ></Stack.Screen>
-              <Stack.Screen
-                name="MotorControllerDetails"
-                component={MotorControllerDetails}
-              ></Stack.Screen>
-              <Stack.Screen
-                name="ResetPasswordScreen"
-                component={ResetPasswordScreen}
-              />
-            </Stack.Navigator>
-          </NavigationContainer>
-        </MqttClientProvider>
+        <NavigationContainer>
+          <Stack.Navigator
+            initialRouteName="AuthLoadingScreen"
+            screenOptions={{
+              headerShown: false,
+            }}
+          >
+            <Stack.Screen
+              name="AuthLoadingScreen"
+              component={AuthLoadingScreen}
+            />
+            <Stack.Screen name="StartScreen" component={StartScreen} />
+            <Stack.Screen name="LoginScreen" component={LoginScreen} />
+            <Stack.Screen name="RegisterScreen" component={RegisterScreen} />
+            <Stack.Screen name="Intro" component={MyTabs}></Stack.Screen>
+            <Stack.Screen
+              name="Connect"
+              component={ConnectSensor}
+            ></Stack.Screen>
+            <Stack.Screen
+              name="MotorControllerDetails"
+              component={MotorControllerDetails}
+            ></Stack.Screen>
+            <Stack.Screen
+              name="ResetPasswordScreen"
+              component={ResetPasswordScreen}
+            />
+          </Stack.Navigator>
+        </NavigationContainer>
       </Provider>
     </>
   );

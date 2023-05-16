@@ -87,14 +87,14 @@ const MotorControllerDetails = ({ navigation }) => {
               marginLeft: -120,
             }}
           >
-            <Ionicons
+            {/* <Ionicons
               name="arrow-back"
               size={35}
               color="black"
               onPress={() => {
                 navigation.goBack();
               }}
-            />
+            /> */}
           </View>
           <View
             style={{

@@ -26,7 +26,6 @@ import { useLayoutEffect } from "react";
 import { useIsFocused } from "@react-navigation/native";
 import EmptyComponent from "../components/EmptyComponent";
 import { ImageBackground } from "react-native";
-import { ClinetMQTT } from "../../store/mqttClient";
 
 const windowheight = Dimensions.get("window").height;
 
@@ -39,7 +38,7 @@ const Home = () => {
   const [isFetching, setIsfetching] = useState(true);
   const devicecontxt = useContext(ExpenseContext);
   const [data, setdata] = useState([]);
-  // console.log("screenwidth" + screenWidth);
+  console.log("screenwidth" + screenWidth);
   const [againconnect, setagainconnect] = useState();
   const [tempdata, settempdata] = useState({
     temp: 32,
@@ -58,9 +57,9 @@ const Home = () => {
       const pollutiondata = await axios.get(
         "https://api.openweathermap.org/data/2.5/air_pollution?lat=13.08&lon=80.27&appid=5d6b1f234758771642fef1698dfcde50"
       );
-      // console.log(tempdata.data.main.temp);
+      console.log(tempdata.data.main.temp);
       // const
-      // console.log(pollutiondata.data.list[0].components.co);
+      console.log(pollutiondata.data.list[0].components.co);
       settempdata({
         temp: tempdata.data.main.temp - 273,
         humidity: tempdata.data.main.humidity,
@@ -69,14 +68,14 @@ const Home = () => {
       // console.log(tempdata.main)
       const docRef = doc(db, "users", getAuth().currentUser.uid);
       const docSnap = await getDoc(docRef);
-      // console.log(docSnap.data().device);
+      console.log(docSnap.data().device);
       devicecontxt.setDevices(docSnap.data().device);
       setName(getAuth().currentUser.displayName);
       setIsfetching(false);
     }
     getdata();
     return () => {
-      // console.log("This will be logged on unmount");
+      console.log("This will be logged on unmount");
     };
   }, []);
 
@@ -109,8 +108,8 @@ const Home = () => {
       client = new Paho.Client("reflow.online", Number(9001), "/", "ws");
       await client.connect({
         onSuccess: function () {
-          console.log("connecteddevice");
-          // client.subscribe("led");
+          console.log("connected");
+          client.subscribe("led");
           setconnected(true);
           setagainconnect(true);
           //     let message = new Paho.Message("Hello World!");
@@ -129,7 +128,7 @@ const Home = () => {
     }
     getDevicess();
     return () => {
-      // console.log("This will be logged on unmount");
+      console.log("This will be logged on unmount");
     };
   }, [focused]);
   function changeon(topic) {
@@ -150,7 +149,6 @@ const Home = () => {
     function onpressedhandler() {
       mqttSend(itemdata.item.url);
     }
-
     return (
       <View style={styles.tile}>
         <DeviceComponentTrial
@@ -165,9 +163,6 @@ const Home = () => {
       </View>
     );
   }
-
-  const mclinet = useContext(ClinetMQTT);
-  mclinet.connectclient();
 
   if (isFetching) {
     return (
@@ -261,7 +256,8 @@ const Home = () => {
               )}
               {/* <Button mode={'contained'} style={styles.button} >+ ADD DEVICE</Button> */}
             </View>
-            <View style={styles.list}>
+
+            <View style={againconnect ? styles.list : styles.list2}>
               {/* <ScrollView> */}
               {devicecontxt.devices && devicecontxt.devices.length ? (
                 <FlatList
@@ -283,6 +279,16 @@ const Home = () => {
 
               {/* </ScrollView> */}
             </View>
+            <Text
+              style={{
+                fontSize: 20,
+                marginLeft: 20,
+                marginTop: 10,
+                color: "#7e7d7d",
+              }}
+            >
+              {!againconnect ? "Devices Loading..." : ""}
+            </Text>
           </View>
         </SafeAreaView>
       </ImageBackground>
@@ -388,6 +394,10 @@ const styles = StyleSheet.create({
   list: {
     height: "100%",
     // paddingBottom: Dimensions.get(),
+  },
+
+  list2: {
+    height: 0,
   },
   text: {
     fontSize: 24,

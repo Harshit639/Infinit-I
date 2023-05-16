@@ -17,6 +17,7 @@ import Checkbox from "expo-checkbox";
 // import Toast from "react-native-root-toast";
 import Toast from "../components/Toast";
 import { Linking } from "react-native";
+import PasswordTextInput from "../components/PasswordTextInput";
 
 export default function RegisterScreen({ navigation }) {
   const [name, setName] = useState({ value: "", error: "" });
@@ -92,14 +93,13 @@ export default function RegisterScreen({ navigation }) {
         textContentType="emailAddress"
         keyboardType="email-address"
       />
-      <TextInput
+      <PasswordTextInput
         label="Password"
         returnKeyType="done"
         value={password.value}
         onChangeText={(text) => setPassword({ value: text, error: "" })}
         error={!!password.error}
         errorText={password.error}
-        secureTextEntry
       />
       <View style={styles.termscontainer}>
         <Checkbox

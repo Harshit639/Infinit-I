@@ -49,6 +49,7 @@ const RoomsScreen = ({ navigation }) => {
   const [selectedDevice, setSelectedDevice] = useState(
     "Water Motor Controller"
   );
+
   const [isLoading, setisLoading] = useState(false);
   const [topic, settopic] = useState();
   const [message, setmessage] = useState("");
@@ -56,6 +57,7 @@ const RoomsScreen = ({ navigation }) => {
   const [tanktype, settanktype] = useState("500");
   const contextdev = useContext(ExpenseContext);
   const [isonline, setonline] = useState();
+  const [roomName, setRoomName] = useState({ value: "", error: "" });
 
   useEffect(() => {
     const unsubscribe = NetInfo.addEventListener((state) => {
@@ -69,10 +71,17 @@ const RoomsScreen = ({ navigation }) => {
     const emailError = ssidValidator(email.value);
     const passwordError = passwordValidator(password.value);
     const heightError = heightValidator(tankheight.value);
-    if (emailError || passwordError || heightError) {
+    if (selectedDevice == "Water Motor Controller") {
+      if (emailError || passwordError || heightError) {
+        setEmail({ ...email, error: emailError });
+        setPassword({ ...password, error: passwordError });
+        settankheight({ ...tankheight, error: heightError });
+        return;
+      }
+    } else if (emailError || passwordError) {
       setEmail({ ...email, error: emailError });
       setPassword({ ...password, error: passwordError });
-      settankheight({ ...tankheight, error: heightError });
+      // settankheight({ ...tankheight, error: heightError });
       return;
     } else {
       storeData(email.value, password.value);
@@ -83,10 +92,17 @@ const RoomsScreen = ({ navigation }) => {
     const emailError = ssidValidator(email.value);
     const passwordError = passwordValidator(password.value);
     const heightError = heightValidator(tankheight.value);
-    if (emailError || passwordError || heightError) {
+    if (selectedDevice == "Water Motor Controller") {
+      if (emailError || passwordError || heightError) {
+        setEmail({ ...email, error: emailError });
+        setPassword({ ...password, error: passwordError });
+        settankheight({ ...tankheight, error: heightError });
+        return;
+      }
+    } else if (emailError || passwordError) {
       setEmail({ ...email, error: emailError });
       setPassword({ ...password, error: passwordError });
-      settankheight({ ...tankheight, error: heightError });
+      // settankheight({ ...tankheight, error: heightError });
       return;
     } else {
       storedevicedata();
@@ -97,10 +113,17 @@ const RoomsScreen = ({ navigation }) => {
     const emailError = ssidValidator(email.value);
     const passwordError = passwordValidator(password.value);
     const heightError = heightValidator(tankheight.value);
-    if (emailError || passwordError || heightError) {
+    if (selectedDevice == "Water Motor Controller") {
+      if (emailError || passwordError || heightError) {
+        setEmail({ ...email, error: emailError });
+        setPassword({ ...password, error: passwordError });
+        settankheight({ ...tankheight, error: heightError });
+        return;
+      }
+    } else if (emailError || passwordError) {
       setEmail({ ...email, error: emailError });
       setPassword({ ...password, error: passwordError });
-      settankheight({ ...tankheight, error: heightError });
+      // settankheight({ ...tankheight, error: heightError });
       return;
     } else {
       console.log(ssid + "####" + passwordx);
@@ -153,26 +176,68 @@ const RoomsScreen = ({ navigation }) => {
       });
       return;
     } else {
-      try {
-        contextdev.addDevice(
-          selectedDevice,
-          topic,
-          "#CEEDC7",
-          tankheight.value
-        );
-        Alert.alert("Success", "Your device has been stored");
-        setEmail({ value: "", error: "" });
-        setPassword({ value: "", error: "" });
-        settopic("");
-        setDeviceName("");
-        setmessage("");
-        navigation.navigate("Home");
-      } catch (err) {
-        let toast = Toast.show("Please check your Internet connection", {
-          duration: Toast.durations.LONG,
-        });
-        return;
+      if (selectedDevice == "Water Motor Controller") {
+        try {
+          contextdev.addDevice(
+            selectedDevice,
+            topic,
+            "#CEEDC7",
+            tankheight.value
+          );
+          Alert.alert("Success", "Your device has been stored");
+          setEmail({ value: "", error: "" });
+          setPassword({ value: "", error: "" });
+          settopic("");
+          setDeviceName("");
+          setmessage("");
+          navigation.navigate("Home");
+        } catch (err) {
+          let toast = Toast.show("Please check your Internet connection", {
+            duration: Toast.durations.LONG,
+          });
+          return;
+        }
+      } else {
+        try {
+          console.log("hello");
+          settopic("test123");
+          contextdev.addDevice("Device 1", topic + "/1", "#CEEDC7", 10);
+          contextdev.addDevice("Device 2", topic + "/2", "#CEEDC7", 10);
+          contextdev.addDevice("Device 3", topic + "/3", "#CEEDC7", 10);
+          Alert.alert("Success", "Your device has been stored");
+          setEmail({ value: "", error: "" });
+          setPassword({ value: "", error: "" });
+          settopic("");
+          setDeviceName("");
+          setmessage("");
+          navigation.navigate("Home");
+        } catch (err) {
+          let toast = Toast.show("Please check your Internet connection", {
+            duration: Toast.durations.LONG,
+          });
+          return;
+        }
       }
+      // try {
+      //   contextdev.addDevice(
+      //     selectedDevice,
+      //     topic,
+      //     "#CEEDC7",
+      //     tankheight.value
+      //   );
+      //   Alert.alert("Success", "Your device has been stored");
+      //   setEmail({ value: "", error: "" });
+      //   setPassword({ value: "", error: "" });
+      //   settopic("");
+      //   setDeviceName("");
+      //   setmessage("");
+      //   navigation.navigate("Home");
+      // } catch (err) {
+      //   let toast = Toast.show("Please check your Internet connection", {
+      //     duration: Toast.durations.LONG,
+      //   });
+      //   return;
+      // }
     }
 
     // contextdev.addDevice(selectedDevice,topic,"#CEEDC7",tankheight);
@@ -244,6 +309,20 @@ const RoomsScreen = ({ navigation }) => {
         autoCapitalize="none"
         keyboardType="email-address"
       /> */}
+            {selectedDevice == "3 channel relay" ? (
+              <TextInput
+                label="Room Name"
+                returnKeyType="next"
+                value={email.value}
+                onChangeText={(text) => setRoomName({ value: text, error: "" })}
+                error={!!roomName.error}
+                errorText={roomName.error}
+                autoCapitalize="none"
+                keyboardType="email-address"
+              />
+            ) : (
+              <></>
+            )}
 
             <TextInput
               label="Network SSID"
